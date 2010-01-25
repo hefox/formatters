@@ -1,0 +1,35 @@
+<?php
+
+/**
+ * Implementation of hook_field_formatter_info().
+ */
+function nrtitle_field_formatter_info() {
+  return array(
+    'nr_fieldname' => array(
+      'label' => t('Fieldname as title link'),
+      'field types' => array('nodereference'),
+      'multiple values' => CONTENT_HANDLE_CORE,
+    ),
+  );
+}
+
+
+function theme_nrtitle_formatter_nr_fieldname($element) {
+  $output = '';
+  if (!empty($element['#item']['nid']) && is_numeric($element['#item']['nid'])) {
+    $field = content_fields($element['#field_name'],$element['#node']->type);
+    $output = l($field['widget']['label'], 'node/'. $element['#item']['nid'],array('query'=>$query));
+  }
+  return $output;
+}
+
+/**
+ * Implementation of hook_theme().
+ */
+function nrtitle_theme() {
+  return array(
+    'nrtitle_formatter_nr_fieldname' => array(
+      'arguments' => array('element'),
+    ),
+  );
+}

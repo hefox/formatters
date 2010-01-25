@@ -1,0 +1,5 @@
+name = Textfield Link formatter
+description = Links a text field to a page with the textfield's text. 
+package = Content
+core = 6.x
+dependencies[]  = text

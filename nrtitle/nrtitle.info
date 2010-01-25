@@ -1,0 +1,5 @@
+name = Node reference title
+description = Title text formatter for node reference link
+package = Content
+core = 6.x
+dependencies[]  = nodereference
