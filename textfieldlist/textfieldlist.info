@@ -1,0 +1,5 @@
+name = Textfield list formatter
+description = Formats a plain text field, splitting it by line and outputting it as a list. 
+package = Content
+core = 6.x
+dependencies[]  = text
