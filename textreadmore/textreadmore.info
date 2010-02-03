@@ -1,0 +1,5 @@
+name = Textfield Read more formatter
+description = Appends a read more link to a text field. 
+package = Content
+core = 6.x
+dependencies[]  = text

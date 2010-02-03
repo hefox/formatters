@@ -1,0 +1,38 @@
+<?php
+
+
+/**
+ * Implementation of hook_field_formatter_info().
+ */
+function textreadmore_field_formatter_info() {
+  return array(
+    'textreadmore' => array(
+      'label' => t('Default + Read more link'),
+      'field types' => array('text'),
+      'multiple values' => CONTENT_HANDLE_CORE,
+    ),
+  );
+}
+
+
+function theme_textreadmore_formatter_textreadmore($element) {
+  $node = $element['#node'];
+  $output = '';
+  $txt = ($allowed =_text_allowed_values($element)) ? $allowed : $element['#item']['safe'];
+  if ($txt && $node->nid) {
+    $txt = '<span class="textreadmore-text">' .$txt . '</span> <span class="textreadmore-link">' . 
+      l(check_plain(variable_get('textreadmore_title','Read more')), 'node/'.$node->nid)
+      . "</span>"; 
+  }
+  return $txt;
+}
+/**
+ * Implementation of hook_theme().
+ */
+function textreadmore_theme() {
+  return array(
+    'textreadmore_formatter_textreadmore' => array(
+      'arguments' => array('element'),
+    ),
+  );
+}
