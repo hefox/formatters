@@ -4,6 +4,10 @@ function btformatter_content_build_modes() {
     'btformatter' => array(
       'title' => t('Beauty time formatters'),
       'build modes' => array(
+        'btformatter' => array(
+          'title' => t('Beauty tip Default'),
+          'views style' => FALSE,
+        ),
         'btimageformatter' => array(
           'title' => t('Beauty tip Image'),
           'views style' => FALSE,
@@ -14,22 +18,23 @@ function btformatter_content_build_modes() {
 }
 
 function btformatter_menu() {
-  $items['btformatter/%node'] = array(
+  $items['btformatter/%node/%'] = array(
       'title callback' => 'node_page_title',
     'title arguments' => array(1),
     'page callback' => 'btformatter_node_page_view',
-    'page arguments' => array(1),
+    'page arguments' => array(1,2),
     'access callback' => 'node_access',
     'access arguments' => array('view', 1),
     'type' => MENU_CALLBACK
   );
-
   return $items;
 }
-function btformatter_node_page_view($node) {
-  $node->build_mode = 'btimageformatter';
+function btformatter_node_page_view($node, $mode = 'btimageformatter') {
+  $node->build_mode = $mode;
   echo node_view($node, FALSE, FALSE);
 }
+
+
 /**
  * Implementation of hook_field_formatter_info().
  */
@@ -74,4 +79,32 @@ function btformatter_theme() {
     'file' => 'btformatter.themes.inc',
   );
   return $themes;
+}
+
+
+/*Siiiiigh, storing the url in the attribute didn't work, needs cleanup man!*/
+
+function btformatter_set_bt($url) {
+  static $i = 0;
+    $i++;
+    $options['btformatter_' .$i] = array(
+      'cssSelect' => '#btformatter-'.$i,
+      'ajaxPath' => url($url),
+    );
+    beautytips_add_beautytips($options);
+   return 'btformatter-'.$i;
+}
+
+
+function btnodetitle($node,$title = '', $mode = 'btformatter') {
+  $id = btformatter_set_bt('btformatter/'. $node->nid.'/' . $mode);
+  return l(($title?$title:$node->title),'node/'.$node->nid,array('attributes'=>array('id'=>$id)));
+}
+
+
+function btformatter_views_api() {
+  return array(
+    'api' => 2,
+    'path' => drupal_get_path('module', 'btformatter'), 
+  );
 }
