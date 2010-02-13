@@ -1,0 +1,77 @@
+<?php
+function btformatter_content_build_modes() {
+  return array(
+    'btformatter' => array(
+      'title' => t('Beauty time formatters'),
+      'build modes' => array(
+        'btimageformatter' => array(
+          'title' => t('Beauty tip Image'),
+          'views style' => FALSE,
+        ),
+      ),
+    ),
+  );
+}
+
+function btformatter_menu() {
+  $items['btformatter/%node'] = array(
+      'title callback' => 'node_page_title',
+    'title arguments' => array(1),
+    'page callback' => 'btformatter_node_page_view',
+    'page arguments' => array(1),
+    'access callback' => 'node_access',
+    'access arguments' => array('view', 1),
+    'type' => MENU_CALLBACK
+  );
+
+  return $items;
+}
+function btformatter_node_page_view($node) {
+  $node->build_mode = 'btimageformatter';
+  echo node_view($node, FALSE, FALSE);
+}
+/**
+ * Implementation of hook_field_formatter_info().
+ */
+function btformatter_field_formatter_info() {
+  $module_path = drupal_get_path('module', 'imagefield');
+  $all_formatters = array();
+  $formatters = array(
+    'btimageformatter' => array(
+      'label' => t('Beautiful image linked to node'),
+      'field types' => array('filefield'),
+      'description' => t('Displays image files in their original size.'),
+    ),
+  );
+  if(module_exists('imagecache')) {
+    foreach (imagecache_presets() as $preset) {
+      $formatters[$preset['presetname'] .'_btimageformatter'] = array(
+        'label' => t('Beautiful @preset image linked to node', array('@preset' => $preset['presetname'])),
+        'field types' => array('filefield'),
+      );
+    }
+  }
+  // go through foreach for each link type
+  return $formatters;
+}
+
+
+function btformatter_theme() {
+  $themes = array();
+
+  if(module_exists('imagecache')) {
+    foreach (imagecache_presets() as $preset) {
+      $themes['btformatter_formatter_'. $preset['presetname'] .'_btimageformatter'] = array(
+        'arguments' => array('element' => NULL),
+        'function' => 'theme_btimageformatter_formatter_cache',
+        'file' => 'btformatter.themes.inc',
+      );
+    }
+  }
+  $themes['btformatter_formatter_btimageformatter'] = array(
+    'arguments' => array('element' => NULL),
+    'function' => 'theme_btimageformatter_formatter_reg',
+    'file' => 'btformatter.themes.inc',
+  );
+  return $themes;
+}

@@ -1,0 +1,6 @@
+name = Beauty tips formatters
+description = beauty tip formatters  
+package = Content
+core = 6.x
+dependencies[]  = imagefield
+dependencies[]  = beautytips
