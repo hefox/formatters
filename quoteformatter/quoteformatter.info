@@ -1,0 +1,5 @@
+name = Quote Formatters
+description = Various textfield quote related formatters
+package = Content
+core = 6.x
+dependencies[]  = nodereference

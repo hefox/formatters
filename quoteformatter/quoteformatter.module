@@ -1,0 +1,75 @@
+<?php
+
+/**
+ * Implementation of hook_field_formatter_info().
+ */
+function quoteformatter_field_formatter_info() {
+  return array(
+    'quoteformatter' => array(
+      'label' => t('quote'),
+      'field types' => array('text'),
+      'multiple values' => CONTENT_HANDLE_CORE,
+    ),
+    'quoteformatter_marks' => array(
+      'label' => t('quote plus quoteformatter marks'),
+      'field types' => array('text'),
+      'multiple values' => CONTENT_HANDLE_CORE,
+    ),
+    'quoteformatter_curly_marks' => array(
+      'label' => t('quote plus curl marks'),
+      'field types' => array('text'),
+      'multiple values' => CONTENT_HANDLE_CORE,
+    ),
+    'quoteformatter_marks_em' => array(
+      'label' => t('quote plus quote marks + em'),
+      'field types' => array('text'),
+      'multiple values' => CONTENT_HANDLE_CORE,
+    ),
+    'quoteformatter_curly_marks_em' => array(
+      'label' => t('quote plus curl marks + em'),
+      'field types' => array('text'),
+      'multiple values' => CONTENT_HANDLE_CORE,
+    ),
+  );
+}
+
+
+function theme_quoteformatter_formatter_quoteformatter($element) {
+  $txt =  ($allowed =_text_allowed_values($element)) ? $allowed : $element['#item']['safe'];
+  if (strstr($element['#formatter'],'curly')) {
+    $txt =  "&ldquo;".$txt."&rdquo;";
+  } elseif (strstr($element['#formatter'],'mark')) {
+    $txt =  '"'.$txt.'"';
+  }
+  if (strstr($element['#formatter'],'em')) {
+    $txt =  "<em>".$txt."</em>" ;
+  }
+  return "<quote>".$txt."</quote>";
+}
+/**
+ * Implementation of hook_theme().
+ */
+function quoteformatter_theme() {
+  return array(
+    'quoteformatter_formatter_quoteformatter' => array(
+      'arguments' => array('element'),
+      'function' => 'theme_quoteformatter_formatter_quoteformatter',
+    ),
+    'quoteformatter_formatter_quoteformatter_marks' => array(
+      'arguments' => array('element'),
+      'function' => 'theme_quoteformatter_formatter_quoteformatter',
+    ),
+    'quoteformatter_formatter_quoteformatter_curly_marks' => array(
+      'arguments' => array('element'),
+      'function' => 'theme_quoteformatter_formatter_quoteformatter',
+    ),
+    'quoteformatter_formatter_quoteformatter_marks_em' => array(
+      'arguments' => array('element'),
+      'function' => 'theme_quoteformatter_formatter_quoteformatter',
+    ),
+    'quoteformatter_formatter_quoteformatter_curly_marks_em' => array(
+      'arguments' => array('element'),
+      'function' => 'theme_quoteformatter_formatter_quoteformatter',
+    ),
+  );
+}
