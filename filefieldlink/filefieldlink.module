@@ -1,0 +1,50 @@
+<?php
+
+
+function filefieldlink_field_formatter_info() {
+  return array(
+    'link' => array(
+      'label' => t('Generic file link, no icon'),
+      'field types' => array('filefield'),
+      'multiple values' => CONTENT_HANDLE_CORE,
+      'description' => t('Displays all kinds of files with an icon and a linked file description.'),
+    ),
+    'nodelink' => array(
+      'label' => t('File link, using node link as default'),
+      'field types' => array('filefield'),
+      'description' => t('Displays the file system path to the file.'),
+    ),
+    'nodelink_always' => array(
+      'label' => t('File link, using node link always'),
+      'field types' => array('filefield'),
+      'description' => t('Displays a full URL to the file.'),
+    ),
+  );
+}
+
+
+function filefieldlink_theme() {
+  return array(
+    'filefieldlink_formatter_link' => array(
+      'arguments' => array('element' => NULL),
+      'file' => 'filefieldlink.formatter.inc',
+    ),
+    'filefieldlink_formatter_nodelink' => array(
+      'arguments' => array('element' => NULL),
+      'file' => 'filefieldlink.formatter.inc',
+    ),
+    'filefieldlink_formatter_nodelink_always' => array(
+      'arguments' => array('element' => NULL),
+      'file' => 'filefieldlink.formatter.inc',
+    ),
+    'filefieldlink_item' => array(
+      'arguments' => array('file' => NULL, 'field' => NULL),
+      'file' => 'filefieldlink.formatter.inc',
+    ),
+    'filefieldlink_file' => array(
+      'arguments' => array('file' => NULL),
+      'file' => 'filefieldlink.formatter.inc',
+    ),
+
+ );
+}
