@@ -44,7 +44,7 @@ function theme_quoteformatter_formatter_quoteformatter($element) {
   if (strstr($element['#formatter'],'em')) {
     $txt =  "<em>".$txt."</em>" ;
   }
-  return "<quote>".$txt."</quote>";
+  return "<blockquote>".$txt."</blockquote>";
 }
 /**
  * Implementation of hook_theme().
