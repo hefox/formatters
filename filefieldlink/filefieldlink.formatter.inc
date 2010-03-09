@@ -71,5 +71,5 @@ function theme_filefieldlink_file($file) {
   }
 
   if (!empty($icon)) return '<div class="filefield-file clear-block">'. $icon . l($link_text, $url, $options) .'</div>';
-  else  l($link_text, $url, $options);
+  else return l($link_text, $url, $options);
 }
