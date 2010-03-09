@@ -70,5 +70,6 @@ function theme_filefieldlink_file($file) {
     $options['attributes']['title'] = $file['filename'];
   }
 
-  return '<div class="filefield-file clear-block">'. $icon . l($link_text, $url, $options) .'</div>';
+  if (!empty($icon)) return '<div class="filefield-file clear-block">'. $icon . l($link_text, $url, $options) .'</div>';
+  else  l($link_text, $url, $options);
 }
