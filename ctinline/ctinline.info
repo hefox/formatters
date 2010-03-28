@@ -1,0 +1,5 @@
+name = Content taxonomy inline link formatter
+description = Provides a content taxonomy links inline
+package = Content
+core = 6.x
+dependencies[] = content_taxonomy

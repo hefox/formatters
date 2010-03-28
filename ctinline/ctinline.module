@@ -1,0 +1,82 @@
+<?php
+
+function ctinline_theme() {
+  return array(
+    'ctinline_formatter_link_inline' => array(
+      'arguments' => array('element' => NULL),
+    ),
+    'ctinline_formatter_default_inline' => array(
+      'arguments' => array('element' => NULL),
+    ),
+  );
+}
+
+
+function ctinline_field_formatter_info() {
+  return array(
+    'link_inline' => array(
+      'label' => t('As Link inline'),
+      'field types' => array('content_taxonomy'),
+      'multiple values' => CONTENT_HANDLE_MODULE,
+    ),
+    'default_inline' => array(
+      'label' => t('As Text Inline'),
+      'field types' => array('content_taxonomy'),
+      'multiple values' => CONTENT_HANDLE_MODULE,
+    ),
+  );
+}
+
+
+/**
+ * Theme a content taxonomy values as a links inline
+ *
+ * @ingroup element
+ */
+function theme_ctinline_formatter_link_inline($element) {
+  $values = ctinline_formatter_get_element_links($element);
+  return theme('links',  $values, array('class' => 'links inline'));
+}
+
+
+/**
+ * Theme a content taxonomy values as a links inline
+ *
+ * @ingroup element
+ */
+function theme_ctinline_formatter_default_inline($element) {
+  $values = ctinline_formatter_get_element_links($element, FALSE);
+  return theme('links',  $values, array('class' => 'links inline'));
+}
+
+
+
+
+function ctinline_formatter_get_element_links($elements, $as_link = TRUE) {
+  // Get data out of multidimensional $element array and place it in flat $values array.
+  $links = array();
+
+  $item = $elements;
+  foreach (element_children($elements) as $key) {
+    unset($item[$key]);
+  }
+
+  foreach (element_children($elements) as $key) {
+    $element['#item'] = $elements[$key]['#item'];
+      if (!empty($element['#item']['value'])) {
+        $term = taxonomy_get_term($element['#item']['value']);
+        _content_taxonomy_localize_term($term);
+        
+        $link =array(
+          'title' => $term->name,
+          'href' =>  ($as_link? taxonomy_term_path($term) : NULL),
+          'attributes' => array('rel' => 'tag', 'title' => $term->description)
+        )
+        ;
+        $links[] = $link;
+      } 
+  }
+
+  return $links;
+}
+
